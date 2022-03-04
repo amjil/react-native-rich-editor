@@ -11,7 +11,7 @@ export default class RichTextEditor extends Component {
     //     initialContentHTML: PropTypes.string,
     //     editorInitializedCallback: PropTypes.func,
     //     onChange: PropTypes.func,
-    //     onHeightChange: PropTypes.func,
+    //     onWidthChange: PropTypes.func,
     //     initialFocus: PropTypes.bool,
     //     disabled: PropTypes.bool,
     //     onPaste: PropTypes.func,
@@ -32,7 +32,7 @@ export default class RichTextEditor extends Component {
         autoCapitalize: 'off',
         defaultParagraphSeparator: 'div',
         editorInitializedCallback: () => {},
-        initialHeight: 0,
+        initialWidth: 0,
     };
 
     constructor(props) {
@@ -66,7 +66,7 @@ export default class RichTextEditor extends Component {
             defaultParagraphSeparator,
             firstFocusEnd,
             useContainer,
-            initialHeight,
+            initialWidth,
         } = props;
         that.state = {
             html: {
@@ -94,7 +94,7 @@ export default class RichTextEditor extends Component {
                     }),
             },
             keyboardHeight: 0,
-            height: initialHeight,
+            width: initialWidth,
         };
         that.focusListeners = [];
     }
@@ -197,12 +197,12 @@ export default class RichTextEditor extends Component {
                 case messages.ON_INPUT:
                     onInput?.(data);
                     break;
-                case messages.OFFSET_HEIGHT:
-                    that.setWebHeight(data);
+                case messages.OFFSET_WIDTH:
+                    that.setWebWidth(data);
                     break;
-                case messages.OFFSET_Y:
-                    let offsetY = Number.parseInt(Number.parseInt(data) + that.layout.y || 0);
-                    offsetY > 0 && onCursorPosition(offsetY);
+                case messages.OFFSET_X:
+                    let offsetX = Number.parseInt(Number.parseInt(data) + that.layout.x || 0);
+                    offsetX > 0 && onCursorPosition(offsetX);
                     break;
                 default:
                     onMessage?.(message);
@@ -213,14 +213,14 @@ export default class RichTextEditor extends Component {
         }
     }
 
-    setWebHeight(height) {
-        const {onHeightChange, useContainer, initialHeight} = this.props;
-        if (height !== this.state.height) {
-            const maxHeight = Math.max(height, initialHeight);
-            if (!this.unmount && useContainer && maxHeight >= initialHeight) {
-                this.setState({height: maxHeight});
+    setWebWidth(width) {
+        const {onWidthChange, useContainer, initialWidth} = this.props;
+        if (width !== this.state.width) {
+            const maxWidth = Math.max(width, initialWidth);
+            if (!this.unmount && useContainer && maxWidth >= initialWidth) {
+                this.setState({width: maxWidth});
             }
-            onHeightChange && onHeightChange(height);
+            onWidthChange && onWidthChange(width);
         }
     }
 
@@ -263,7 +263,7 @@ export default class RichTextEditor extends Component {
             <>
                 <WebView
                     useWebKit={true}
-                    scrollEnabled={false}
+                    scrollEnabled={true}
                     hideKeyboardAccessoryView={true}
                     keyboardDisplayRequiresUserAction={false}
                     nestedScrollEnabled={!useContainer}
@@ -290,14 +290,14 @@ export default class RichTextEditor extends Component {
     }
 
     render() {
-        let {height} = this.state;
+        let {width} = this.state;
 
         // useContainer is an optional prop with default value of true
         // If set to true, it will use a View wrapper with styles and height.
         // If set to false, it will not use a View wrapper
         const {useContainer, style} = this.props;
         return useContainer ? (
-            <View style={[style, {height}]} onLayout={this.onViewLayout}>
+            <View style={[style, {width}]} onLayout={this.onViewLayout}>
                 {this.renderWebView()}
             </View>
         ) : (

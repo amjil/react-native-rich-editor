@@ -2,17 +2,19 @@ function getContentCSS() {
     /*img {max-width: 98%;margin-left:auto;margin-right:auto;display: block;}*/
     return `
     <style>
+        body { writing-mode: vertical-lr; overflow-x: hidden; -webkit-overflow-scrolling: touch;}
+        .pell { height: 100%; width: 100%;} .pell-content { outline: 0; overflow-x: auto;padding: 10px;width: 100%; -webkit-overflow-scrolling: touch;}
         video {max-width: 98%;margin-left:auto;margin-right:auto;display: block;}
         img {max-width: 98%;vertical-align: middle;}
-        table {width: 100% !important;}
-        table td {width: inherit;}
+        table {height: 100% !important;}
+        table td {height: inherit;}
         table span { font-size: 12px !important; }
         .x-todo li {list-style:none;}
         .x-todo-box {position: relative; left: -24px;}
         .x-todo-box input{position: absolute;}
-        blockquote{border-left: 6px solid #ddd;padding: 5px 0 5px 10px;margin: 15px 0 15px 15px;}
-        hr{display: block;height: 0; border: 0;border-top: 1px solid #ccc; margin: 15px 0; padding: 0;}
-        pre{padding: 10px 5px 10px 10px;margin: 15px 0;display: block;line-height: 18px;background: #F0F0F0;border-radius: 6px;font-size: 13px; font-family: 'monaco', 'Consolas', "Liberation Mono", Courier, monospace; word-break: break-all; word-wrap: break-word;overflow-x: auto;}
+        blockquote{border-top: 6px solid #ddd;padding: 10px 5px 0 5px;margin: 15px 15px 0 15px;}
+        hr{display: block;width: 0; border: 0;border-left: 1px solid #ccc; margin: 0 15px; padding: 0;}
+        pre{padding: 10px 10px 5px 10px;margin: 0 15px;display: block;line-height: 18px;background: #F0F0F0;border-radius: 6px;font-size: 13px; font-family: 'monaco', 'Consolas', "Liberation Mono", Courier, monospace; word-break: break-all; word-wrap: break-word;overflow-x: auto;}
         pre code {display: block;font-size: inherit;white-space: pre-wrap;color: inherit;}
     </style>
     `;
@@ -50,10 +52,10 @@ function createHTML(options = {}) {
     <style>
         ${initialCSSText}
         * {outline: 0px solid transparent;-webkit-tap-highlight-color: rgba(0,0,0,0);-webkit-touch-callout: none;box-sizing: border-box;}
-        html, body { margin: 0; padding: 0;font-family: Arial, Helvetica, sans-serif; font-size:1em; height: 100%}
-        body { overflow-y: hidden; -webkit-overflow-scrolling: touch;background-color: ${backgroundColor};caret-color: ${caretColor};}
-        .content {font-family: Arial, Helvetica, sans-serif;color: ${color}; width: 100%;${!useContainer ? 'height:100%;' : ''}-webkit-overflow-scrolling: touch;padding-left: 0;padding-right: 0;}
-        .pell { height: 100%;} .pell-content { outline: 0; overflow-y: auto;padding: 10px;height: 100%;${contentCSSText}}
+        html, body { margin: 0; padding: 0;font-family: Arial, Helvetica, sans-serif; font-size:1em; width: 100%}
+        body { writing-mode: vertical-lr; overflow-x: hidden; -webkit-overflow-scrolling: touch;background-color: ${backgroundColor};caret-color: ${caretColor};}
+        .content {font-family: Arial, Helvetica, sans-serif;color: ${color}; height: 100%;${!useContainer ? 'width:100%;' : ''}-webkit-overflow-scrolling: touch;padding-left: 0;padding-right: 0;}
+        .pell { height: 100%; width: 100%;} .pell-content { outline: 0; overflow-x: auto;padding: 10px;width: 100%;${contentCSSText}}
     </style>
     <style>
         [placeholder]:empty:before { content: attr(placeholder); color: ${placeholderColor};}
@@ -78,7 +80,7 @@ function createHTML(options = {}) {
         var body = document.body, docEle = document.documentElement;
         var defaultParagraphSeparatorString = 'defaultParagraphSeparator';
         var formatBlock = 'formatBlock';
-        var editor = null, editorFoucs = false, o_height = 0, compositionStatus = 0, paragraphStatus = 0, enterStatus = 0;
+        var editor = null, editorFoucs = false, o_width = 0, compositionStatus = 0, paragraphStatus = 0, enterStatus = 0;
         function addEventListener(parent, type, listener) {
             return parent.addEventListener(type, listener);
         };
@@ -223,8 +225,8 @@ function createHTML(options = {}) {
         var _keyDown = false;
         function handleChange (event){
             var node = anchorNode;
-            Actions.UPDATE_HEIGHT();
-            Actions.UPDATE_OFFSET_Y();
+            Actions.UPDATE_WIDTH();
+            Actions.UPDATE_OFFSET_X();
             if (_keyDown){
                 if(_checkboxFlag === 1 && checkboxNode(node)){
                     _checkboxFlag = 0;
@@ -405,24 +407,24 @@ function createHTML(options = {}) {
                 }
             },
 
-            UPDATE_HEIGHT: function() {
+            UPDATE_WIDTH: function() {
                 if (!${useContainer}) return;
-                // var height = Math.max(docEle.scrollHeight, body.scrollHeight);
-                var height = editor.content.scrollHeight;
-                if (o_height !== height){
-                    _postMessage({type: 'OFFSET_HEIGHT', data: o_height = height});
+                // var width = Math.max(docEle.scrollWidth, body.scrollWidth);
+                var width = editor.content.scrollWidth;
+                if (o_width !== width){
+                    _postMessage({type: 'OFFSET_WIDTH', data: o_width = width});
                 }
             },
 
-            UPDATE_OFFSET_Y: function (){
+            UPDATE_OFFSET_X: function (){
                 if (!${useContainer}) return;
                 var node = anchorNode || window.getSelection().anchorNode;
                 var sel = window.getSelection();
                 if (node){
                     var siblingOffset = (node.nextSibling && node.nextSibling.offsetTop) || (node.previousSibling && node.previousSibling.offsetTop)
-                    var offsetY = node.offsetTop || siblingOffset || node.parentNode.offsetTop;
-                    if (offsetY){
-                        _postMessage({type: 'OFFSET_Y', data: offsetY});
+                    var offsetX = node.offsetLeft || siblingOffset || node.parentNode.offsetTop;
+                    if (offsetX){
+                        _postMessage({type: 'OFFSET_X', data: offsetX});
                     }
                 }
             }
@@ -543,7 +545,7 @@ function createHTML(options = {}) {
             function handleFocus (){
                 editorFoucs = true;
                 setTimeout(function (){
-                    Actions.UPDATE_OFFSET_Y();
+                    Actions.UPDATE_OFFSET_X();
                 });
                 postAction({type: 'CONTENT_FOCUSED'});
             }

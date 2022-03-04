@@ -1,7 +1,7 @@
 export const actions = {
     content: 'content',
 
-    updateHeight: 'UPDATE_HEIGHT',
+    updateWidth: 'UPDATE_WIDTH',
 
     setBold: 'bold',
     setItalic: 'italic',
@@ -54,8 +54,8 @@ export const actions = {
     setTextColor: 'SET_TEXT_COLOR',
     setBackgroundColor: 'SET_BACKGROUND_COLOR',
     init: 'init',
-    setEditorHeight: 'SET_EDITOR_HEIGHT',
-    setFooterHeight: 'SET_FOOTER_HEIGHT',
+    setEditorWidth: 'SET_EDITOR_WIDTH',
+    setFooterWidth: 'SET_FOOTER_WIDTH',
     setPlatform: 'SET_PLATFORM',
 };
 
@@ -72,7 +72,7 @@ export const messages = {
     SELECTED_TEXT_RESPONSE: 'SELECTED_TEXT_RESPONSE',
     LINK_TOUCHED: 'LINK_TOUCHED',
     SELECTED_TEXT_CHANGED: 'SELECTED_TEXT_CHANGED',
-    OFFSET_HEIGHT: 'OFFSET_HEIGHT',
-    OFFSET_Y: 'OFFSET_Y',
+    OFFSET_WIDTH: 'OFFSET_WIDTH',
+    OFFSET_X: 'OFFSET_X',
     ON_INPUT: 'ON_INPUT',
 };

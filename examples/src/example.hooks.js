@@ -55,7 +55,7 @@ function createContentStyle(theme) {
         caretColor: 'red', // initial valid// initial valid
         placeholderColor: 'gray',
         // cssText: '#editor {background-color: #f3f3f3}', // initial valid
-        contentCSSText: 'font-size: 16px; min-height: 200px;', // initial valid
+        contentCSSText: 'font-size: 16px; min-width: 200px;', // initial valid
     };
     if (theme === 'light') {
         contentStyle.backgroundColor = '#fff';
@@ -120,9 +120,9 @@ export function Example(props) {
         TextInput.State.currentlyFocusedInput() && setEmojiVisible(false)
     }, []);
 
-    // editor height change
-    let handleHeightChange = useCallback((height) => {
-        console.log('editor height change:', height);
+    // editor width change
+    let handleWidthChange = useCallback((width) => {
+        console.log('editor width change:', width);
     }, []);
 
     let handleInsertEmoji = useCallback((emoji) => {
@@ -149,7 +149,7 @@ export function Example(props) {
         // );
         richText.current?.insertHTML(
             `<div style="padding:10px 0;" contentEditable="false">
-                <iframe  width="100%" height="220"  src="https://www.youtube.com/embed/6FrNXgXlCGA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe  height="100%" width="220"  src="https://www.youtube.com/embed/6FrNXgXlCGA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>`,
         );
     }, []);
@@ -212,7 +212,7 @@ export function Example(props) {
                 richText.current?.commandDOM(`$('#${id}').src="${imageList[XMath.random(imageList.length - 1)]}"`);
                 break;
             case 'TitleClick':
-                const color = ['red', 'blue', 'gray', 'yellow', 'coral'];
+                const color = ['green', 'blue', 'gray', 'yellow', 'coral'];
 
                 // command: $ = document.querySelector
                 richText.current?.commandDOM(`$('#${id}').style.color='${color[XMath.random(color.length - 1)]}'`);
@@ -228,12 +228,13 @@ export function Example(props) {
     }, [])
 
     let handleBlur = useCallback(() => {
+        Keyboard.dismiss;
         console.log('editor blur');
     }, []);
 
     let handleCursorPosition = useCallback((scrollY) => {
         // Positioning scroll bar
-        scrollRef.current.scrollTo({y: scrollY - 30, animated: true});
+        scrollRef.current.scrollTo({x: scrollX - 30, animated: true});
     }, [])
 
 
@@ -270,7 +271,8 @@ export function Example(props) {
                 keyboardDismissMode={'none'}
                 ref={scrollRef}
                 nestedScrollEnabled={true}
-                scrollEventThrottle={20}>
+                scrollEventThrottle={20}
+                >
                 <View style={[styles.topVi, dark && styles.darkBack]}>
                     <View style={styles.item}>
                         <Text style={{color}}>To: </Text>
@@ -312,14 +314,14 @@ export function Example(props) {
                     ref={richText}
                     style={styles.rich}
                     useContainer={true}
-                    initialHeight={400}
+                    initialWidth={400}
                     enterKeyHint={'done'}
                     // containerStyle={{borderRadius: 24}}
                     placeholder={'please input content'}
                     initialContentHTML={initHTML}
                     editorInitializedCallback={editorInitializedCallback}
                     onChange={handleChange}
-                    onHeightChange={handleHeightChange}
+                    onWidthChange={handleWidthChange}
                     onPaste={handlePaste}
                     onKeyUp={handleKeyUp}
                     onKeyDown={handleKeyDown}
@@ -331,7 +333,7 @@ export function Example(props) {
                     pasteAsPlainText={true}
                 />
             </ScrollView>
-            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'width'}>
                 <RichToolbar
                     style={[styles.richBar, dark && styles.richBarDark]}
                     flatContainerStyle={styles.flatStyle}
@@ -407,7 +409,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 5,
     },
     rich: {
-        minHeight: 300,
+        minHeight: 400,
         flex: 1,
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderColor: '#e3e3e3',
@@ -454,4 +456,3 @@ const styles = StyleSheet.create({
         paddingHorizontal: 12,
     },
 });
-

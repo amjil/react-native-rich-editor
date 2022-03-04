@@ -66,7 +66,7 @@ class ExampleClass extends React.Component {
         that.onLinkDone = ::that.onLinkDone;
         that.themeChange = ::that.themeChange;
         that.handleChange = ::that.handleChange;
-        that.handleHeightChange = ::that.handleHeightChange;
+        that.handleWidthChange = ::that.handleWidthChange;
         that.insertEmoji = ::that.insertEmoji;
         that.insertHTML = ::that.insertHTML;
         that.insertVideo = ::that.insertVideo;
@@ -131,8 +131,8 @@ class ExampleClass extends React.Component {
      * editor height change
      * @param {number} height
      */
-    handleHeightChange(height) {
-        console.log('editor height change:', height);
+    handleWidthChange(width) {
+        console.log('editor Width change:', width);
     }
 
     insertEmoji(emoji) {
@@ -173,8 +173,8 @@ class ExampleClass extends React.Component {
         //     `<span onclick="alert(2)" style="color: blue; padding:0 10px;" contenteditable="false">HTML</span>`,
         // );
         this.richText.current?.insertHTML(
-            `<div style="padding:10px 0;" contentEditable="false">
-                <iframe  width="100%" height="220"  src="https://www.youtube.com/embed/6FrNXgXlCGA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            `<div style="padding:0 10px;" contentEditable="false">
+                <iframe  height="100%" height="220"  src="https://www.youtube.com/embed/6FrNXgXlCGA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>`,
         );
     }
@@ -210,7 +210,7 @@ class ExampleClass extends React.Component {
             caretColor: 'red', // initial valid// initial valid
             placeholderColor: 'gray',
             // cssText: '#editor {background-color: #f3f3f3}', // initial valid
-            contentCSSText: 'font-size: 16px; min-height: 200px;', // initial valid
+            contentCSSText: 'font-size: 16px; min-width: 200px;', // initial valid
         };
         if (theme === 'light') {
             contentStyle.backgroundColor = '#fff';
@@ -257,7 +257,7 @@ class ExampleClass extends React.Component {
      * @param {string} inputType
      */
     onInput = ({data, inputType}) => {
-        // console.log(inputType, data)
+        console.log(inputType, data)
     }
 
     handleMessage = ({type, id, data}) => {
@@ -364,7 +364,7 @@ class ExampleClass extends React.Component {
                         initialContentHTML={initHTML}
                         editorInitializedCallback={that.editorInitializedCallback}
                         onChange={that.handleChange}
-                        onHeightChange={that.handleHeightChange}
+                        onWidthChange={that.handleWidthChange}
                         onPaste={that.handlePaste}
                         onKeyUp={that.handleKeyUp}
                         onKeyDown={that.handleKeyDown}
@@ -477,12 +477,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#191d20',
     },
     item: {
-        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderLeftWidth: StyleSheet.hairlineWidth,
         borderColor: '#e8e8e8',
         flexDirection: 'row',
-        height: 40,
+        width: 40,
         alignItems: 'center',
-        paddingHorizontal: 15,
+        paddingVertical: 15,
     },
 
     input: {
