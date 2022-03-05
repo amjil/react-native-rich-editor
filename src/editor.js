@@ -2,7 +2,7 @@ function getContentCSS() {
     /*img {max-width: 98%;margin-left:auto;margin-right:auto;display: block;}*/
     return `
     <style>
-        body { writing-mode: vertical-lr; overflow-x: hidden; -webkit-overflow-scrolling: touch;}
+        body { caret-color: black; writing-mode: vertical-lr; overflow-x: hidden; -webkit-overflow-scrolling: touch;}
         .pell { height: 100%; width: 100%;} .pell-content { outline: 0; overflow-x: auto;padding: 10px;width: 100%; -webkit-overflow-scrolling: touch;}
         video {max-width: 98%;margin-left:auto;margin-right:auto;display: block;}
         img {max-width: 98%;vertical-align: middle;}
@@ -421,8 +421,8 @@ function createHTML(options = {}) {
                 var node = anchorNode || window.getSelection().anchorNode;
                 var sel = window.getSelection();
                 if (node){
-                    var siblingOffset = (node.nextSibling && node.nextSibling.offsetTop) || (node.previousSibling && node.previousSibling.offsetTop)
-                    var offsetX = node.offsetLeft || siblingOffset || node.parentNode.offsetTop;
+                    var siblingOffset = (node.nextSibling && node.nextSibling.offsetLeft) || (node.previousSibling && node.previousSibling.offsetLeft)
+                    var offsetX = node.offsetLeft || siblingOffset || node.parentNode.offsetLeft;
                     if (offsetX){
                         _postMessage({type: 'OFFSET_X', data: offsetX});
                     }

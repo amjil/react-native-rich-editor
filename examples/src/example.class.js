@@ -286,9 +286,9 @@ class ExampleClass extends React.Component {
         this.editorFocus = false;
     };
 
-    handleCursorPosition = scrollY => {
+    handleCursorPosition = scrollX => {
         // Positioning scroll bar
-        this.scrollRef.current.scrollTo({y: scrollY - 30, animated: true});
+        this.scrollRef.current.scrollTo({x: scrollX - 40, animated: true});
     };
 
     render() {
@@ -495,7 +495,7 @@ const styles = StyleSheet.create({
     },
 
     flatStyle: {
-        paddingHorizontal: 12,
+        paddingVertical: 12,
     },
 });
 

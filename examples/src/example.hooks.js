@@ -224,17 +224,18 @@ export function Example(props) {
     }, [])
 
     let handleFocus = useCallback(() => {
+        Keyboard.dismiss;
         console.log('editor focus')
     }, [])
 
     let handleBlur = useCallback(() => {
-        Keyboard.dismiss;
         console.log('editor blur');
     }, []);
 
-    let handleCursorPosition = useCallback((scrollY) => {
+    let handleCursorPosition = useCallback((scrollX) => {
         // Positioning scroll bar
         scrollRef.current.scrollTo({x: scrollX - 30, animated: true});
+        console.log('editor scroll to ' + scrollX);
     }, [])
 
 
@@ -266,72 +267,55 @@ export function Example(props) {
                 <Button title={'HOME'} onPress={handleHome}/>
                 <Button title="Preview" onPress={handleSave}/>
             </View>
-            <ScrollView
-                style={[styles.scroll, dark && styles.scrollDark]}
-                keyboardDismissMode={'none'}
-                ref={scrollRef}
-                nestedScrollEnabled={true}
-                scrollEventThrottle={20}
-                >
-                <View style={[styles.topVi, dark && styles.darkBack]}>
-                    <View style={styles.item}>
-                        <Text style={{color}}>To: </Text>
-                        <TextInput
-                            autoCorrect={false}
-                            style={[styles.input, {color}]}
-                            placeholderTextColor={placeholderColor}
-                            placeholder={'stulip@126.com'}
-                        />
-                    </View>
-                    <View style={styles.item}>
-                        <Text style={{color}}>Subject: </Text>
-                        <TextInput
-                            autoCorrect={false}
-                            style={[styles.input, {color}]}
-                            placeholderTextColor={placeholderColor}
-                            placeholder="Rich Editor Bug 😀"
-                        />
-                    </View>
-                    <View style={styles.item}>
-                        <Button title={theme} onPress={onTheme}/>
-                        <Button title={disabled ? 'enable' : 'disable'} onPress={onDisabled}/>
-                    </View>
+            <View style={[styles.topVi, dark && styles.darkBack]}>
+
+                <View style={styles.item}>
+                    <Button title={theme} onPress={onTheme}/>
+                    <Button title={disabled ? 'enable' : 'disable'} onPress={onDisabled}/>
                 </View>
-                <RichToolbar
-                    style={[styles.richBar, dark && styles.richBarDark]}
-                    flatContainerStyle={styles.flatStyle}
-                    editor={richText}
-                    disabled={disabled}
-                    selectedIconTint={'#2095F2'}
-                    disabledIconTint={'#bfbfbf'}
-                    onPressAddImage={onPressAddImage}
-                    onInsertLink={onInsertLink}
-                />
-                <RichEditor
-                    // initialFocus={true}
-                    disabled={disabled}
-                    editorStyle={contentStyle} // default light style
-                    ref={richText}
-                    style={styles.rich}
-                    useContainer={true}
-                    initialWidth={400}
-                    enterKeyHint={'done'}
-                    // containerStyle={{borderRadius: 24}}
-                    placeholder={'please input content'}
-                    initialContentHTML={initHTML}
-                    editorInitializedCallback={editorInitializedCallback}
-                    onChange={handleChange}
-                    onWidthChange={handleWidthChange}
-                    onPaste={handlePaste}
-                    onKeyUp={handleKeyUp}
-                    onKeyDown={handleKeyDown}
-                    onInput={handleInput}
-                    onMessage={handleMessage}
-                    onFocus={handleFocus}
-                    onBlur={handleBlur}
-                    onCursorPosition={handleCursorPosition}
-                    pasteAsPlainText={true}
-                />
+            </View>
+            <RichToolbar
+                style={[styles.richBar, dark && styles.richBarDark]}
+                flatContainerStyle={styles.flatStyle}
+                editor={richText}
+                disabled={disabled}
+                selectedIconTint={'#2095F2'}
+                disabledIconTint={'#bfbfbf'}
+                onPressAddImage={onPressAddImage}
+                onInsertLink={onInsertLink}
+            />
+            <ScrollView
+            style={[styles.scroll, dark && styles.scrollDark]}
+            ref={scrollRef}
+            nestedScrollEnabled={true}
+            scrollEventThrottle={20}
+            horizontal={true}
+            >
+              <RichEditor
+                  // initialFocus={true}
+                  disabled={disabled}
+                  editorStyle={contentStyle} // default light style
+                  ref={richText}
+                  style={styles.rich}
+                  useContainer={true}
+                  initialWidth={400}
+                  enterKeyHint={'done'}
+                  // containerStyle={{borderRadius: 24}}
+                  placeholder={'please input content'}
+                  initialContentHTML={initHTML}
+                  editorInitializedCallback={editorInitializedCallback}
+                  onChange={handleChange}
+                  onWidthChange={handleWidthChange}
+                  onPaste={handlePaste}
+                  onKeyUp={handleKeyUp}
+                  onKeyDown={handleKeyDown}
+                  onInput={handleInput}
+                  onMessage={handleMessage}
+                  onFocus={handleFocus}
+                  onBlur={handleBlur}
+                  onCursorPosition={handleCursorPosition}
+                  pasteAsPlainText={true}
+              />
             </ScrollView>
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'width'}>
                 <RichToolbar
@@ -453,6 +437,6 @@ const styles = StyleSheet.create({
     },
 
     flatStyle: {
-        paddingHorizontal: 12,
+        paddingVertical: 12,
     },
 });
